@@ -1,0 +1,6 @@
+{
+    "LinearRegression_MAE": 86948.67759509262,
+    "RandomForestRegressor_MAE": 46150.57212365591,
+    "Best_Model": "RandomForestRegressor",
+    "Best_Model_MAE": 46150.57212365591
+}
