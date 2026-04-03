@@ -145,7 +145,82 @@ def build_input_dataframe(user_inputs: dict, feature_columns: list[str]) -> pd.D
 
 
 # Configure the Streamlit page before any other UI content.
-st.set_page_config(page_title="Real Estate Price Predictor", page_icon="🏠", layout="wide")
+st.set_page_config(page_title="Real Estate Price Predictor", layout="wide")
+# Add custom CSS styling to improve UI colors and layout.
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+    }
+
+    h1 {
+        color: #1e3a8a;
+        font-weight: 700;
+    }
+
+    h2, h3 {
+        color: #1d4ed8;
+    }
+
+    p {
+        color: #334155;
+    }
+
+    div[data-testid="stForm"] {
+        background: #ffffff;
+        padding: 24px;
+        border-radius: 18px;
+        border: 1px solid #dbeafe;
+        box-shadow: 0 10px 25px rgba(30, 58, 138, 0.08);
+    }
+
+    div[data-testid="stMetric"] {
+        background: #ffffff;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid #dbeafe;
+        box-shadow: 0 6px 18px rgba(30, 58, 138, 0.08);
+    }
+
+    div[data-testid="stInfo"] {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #1e3a8a;
+        border-radius: 14px;
+        border: 1px solid #93c5fd;
+    }
+
+    div.stButton > button,
+    div[data-testid="stFormSubmitButton"] > button {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: white;
+        border-radius: 12px;
+        border: none;
+        padding: 10px 22px;
+        font-weight: 600;
+    }
+
+    div.stButton > button:hover,
+    div[data-testid="stFormSubmitButton"] > button:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    }
+
+    div[data-baseweb="input"] > div,
+    div[data-baseweb="select"] > div {
+        border-radius: 10px;
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+    }
+
+    .stDataFrame {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #dbeafe;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Display the title of the application.
 st.title("Real Estate Price Predictor")
