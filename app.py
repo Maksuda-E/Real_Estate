@@ -41,16 +41,24 @@ METRICS_PATH = ARTIFACTS_DIR / "metrics.json"
 def load_model():
     # Start a try block to catch file loading errors.
     try:
+        # Check whether the model file exists before loading.
+        if not MODEL_PATH.exists():
+            # Raise a file not found error if the model is missing.
+            raise FileNotFoundError(f"Missing model file: {MODEL_PATH}")
+
         # Load the trained model from disk.
         model = joblib.load(MODEL_PATH)
+
         # Return the loaded model.
         return model
+
     # Catch any exception during model loading.
     except Exception as error:
         # Log the model loading error.
         logger.exception("Failed to load model: %s", error)
+
         # Raise a Streamlit visible error.
-        raise RuntimeError("Model file could not be loaded. Train the model first.")
+        raise RuntimeError("Model file could not be loaded. Make sure the trained artifacts exist.")
 
 
 # Cache the feature list loading for performance.
@@ -58,16 +66,23 @@ def load_model():
 def load_feature_columns():
     # Start a try block to catch JSON reading errors.
     try:
+        # Check whether the feature file exists before opening.
+        if not FEATURES_PATH.exists():
+            # Raise a file not found error if the feature file is missing.
+            raise FileNotFoundError(f"Missing feature file: {FEATURES_PATH}")
+
         # Open the feature JSON file in read mode.
         with open(FEATURES_PATH, "r", encoding="utf-8") as file:
             # Load and return the feature list from JSON.
             return json.load(file)
+
     # Catch any exception during feature file loading.
     except Exception as error:
         # Log the feature loading error.
         logger.exception("Failed to load feature columns: %s", error)
+
         # Raise a user friendly runtime error.
-        raise RuntimeError("Feature configuration could not be loaded. Train the model first.")
+        raise RuntimeError("Feature configuration could not be loaded. Make sure the trained artifacts exist.")
 
 
 # Cache metrics loading for performance.
@@ -81,12 +96,15 @@ def load_metrics():
             with open(METRICS_PATH, "r", encoding="utf-8") as file:
                 # Return the metrics dictionary.
                 return json.load(file)
+
         # Return an empty dictionary if metrics file is missing.
         return {}
+
     # Catch any exception during metrics loading.
     except Exception as error:
         # Log the metrics loading error.
         logger.exception("Failed to load metrics: %s", error)
+
         # Return an empty dictionary to keep the app running.
         return {}
 
@@ -145,88 +163,152 @@ def build_input_dataframe(user_inputs: dict, feature_columns: list[str]) -> pd.D
 
 
 # Configure the Streamlit page before any other UI content.
-st.set_page_config(page_title="Real Estate Price Predictor", layout="wide")
-# Add custom CSS styling to improve UI colors and layout.
+st.set_page_config(page_title="Real Estate Price Predictor", page_icon="🏡", layout="wide")
+
+# Add custom CSS styling to improve the full application design.
 st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+        background: linear-gradient(135deg, #fffaf5 0%, #fef3e7 45%, #fde2e4 100%);
     }
 
-    h1 {
-        color: #1e3a8a;
-        font-weight: 700;
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 
-    h2, h3 {
-        color: #1d4ed8;
+    h1, h2, h3 {
+        color: #7c2d12;
+        font-weight: 800;
+        letter-spacing: 0.3px;
     }
 
-    p {
-        color: #334155;
+    p, label, div {
+        color: #4b5563;
     }
 
     div[data-testid="stForm"] {
-        background: #ffffff;
-        padding: 24px;
-        border-radius: 18px;
-        border: 1px solid #dbeafe;
-        box-shadow: 0 10px 25px rgba(30, 58, 138, 0.08);
+        background: rgba(255, 255, 255, 0.88);
+        padding: 28px;
+        border-radius: 24px;
+        border: 1px solid rgba(251, 146, 60, 0.18);
+        box-shadow: 0 12px 30px rgba(124, 45, 18, 0.08);
+        backdrop-filter: blur(10px);
     }
 
     div[data-testid="stMetric"] {
-        background: #ffffff;
-        padding: 16px;
-        border-radius: 14px;
-        border: 1px solid #dbeafe;
-        box-shadow: 0 6px 18px rgba(30, 58, 138, 0.08);
+        background: rgba(255, 255, 255, 0.94);
+        padding: 14px;
+        border-radius: 20px;
+        border: 1px solid rgba(251, 146, 60, 0.16);
+        box-shadow: 0 10px 24px rgba(124, 45, 18, 0.08);
+    }
+
+    div[data-testid="stMetricLabel"] {
+        color: #9a3412;
+        font-weight: 700;
+    }
+
+    div[data-testid="stMetricValue"] {
+        color: #7c2d12;
+        font-weight: 800;
     }
 
     div[data-testid="stInfo"] {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        color: #1e3a8a;
-        border-radius: 14px;
-        border: 1px solid #93c5fd;
-    }
-
-    div.stButton > button,
-    div[data-testid="stFormSubmitButton"] > button {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-        color: white;
-        border-radius: 12px;
-        border: none;
-        padding: 10px 22px;
+        background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+        color: #7c2d12;
+        border-radius: 18px;
+        border: 1px solid rgba(251, 146, 60, 0.28);
+        box-shadow: 0 8px 20px rgba(251, 146, 60, 0.12);
         font-weight: 600;
     }
 
-    div.stButton > button:hover,
-    div[data-testid="stFormSubmitButton"] > button:hover {
-        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    div[data-baseweb="input"] > div {
+        background: #fff7ed;
+        border: 1px solid #fdba74;
+        border-radius: 14px;
+        box-shadow: none;
     }
 
-    div[data-baseweb="input"] > div,
+    div[data-baseweb="input"] input {
+        color: #7c2d12;
+        font-weight: 600;
+    }
+
     div[data-baseweb="select"] > div {
-        border-radius: 10px;
-        background-color: #f8fafc;
-        border: 1px solid #cbd5e1;
+        background: #fff7ed;
+        border: 1px solid #fdba74;
+        border-radius: 14px;
+        color: #7c2d12;
+        box-shadow: none;
+    }
+
+    div[data-testid="stFormSubmitButton"] > button {
+        width: 100%;
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        font-weight: 800;
+        box-shadow: 0 14px 28px rgba(234, 88, 12, 0.28);
+        transition: all 0.25s ease-in-out;
+    }
+
+    div[data-testid="stFormSubmitButton"] > button:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 18px 30px rgba(234, 88, 12, 0.34);
+        background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+        color: white;
+    }
+
+    div[data-testid="stFormSubmitButton"] > button:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(251, 146, 60, 0.35);
+        color: white;
     }
 
     .stDataFrame {
-        background: white;
-        border-radius: 12px;
-        border: 1px solid #dbeafe;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 18px;
+        border: 1px solid rgba(251, 146, 60, 0.16);
+        box-shadow: 0 10px 24px rgba(124, 45, 18, 0.08);
+        padding: 8px;
+    }
+
+    div[data-testid="stMarkdownContainer"] hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, #fdba74 0%, #fb7185 100%);
+        border-radius: 999px;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# Display the title of the application.
-st.title("Real Estate Price Predictor")
-
-# Display a short project description.
-st.write("Predict property price using the trained machine learning model.")
+# Display a styled hero header section.
+st.markdown(
+    """
+    <div style="
+        background: linear-gradient(135deg, #7c2d12 0%, #c2410c 55%, #f97316 100%);
+        padding: 32px;
+        border-radius: 26px;
+        margin-bottom: 24px;
+        box-shadow: 0 18px 36px rgba(124, 45, 18, 0.18);
+    ">
+        <h1 style="color: white; margin: 0; font-size: 3rem; font-weight: 800;">
+            Real Estate Price Predictor
+        </h1>
+        <p style="color: #ffedd5; margin-top: 12px; font-size: 1.1rem;">
+            Predict property price using the trained machine learning model.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Load the model into memory.
 model = load_model()
@@ -238,7 +320,7 @@ feature_columns = load_feature_columns()
 metrics = load_metrics()
 
 # Create two main layout columns.
-left_col, right_col = st.columns([2, 1])
+left_col, right_col = st.columns([2.2, 1])
 
 # Start the left column where the form will appear.
 with left_col:
@@ -291,7 +373,7 @@ with left_col:
             property_type = st.selectbox("Property Type", options=["House", "Condo"])
 
         # Add the submit button at the end of the form.
-        submitted = st.form_submit_button("Predict Price")
+        submitted = st.form_submit_button("Predict Property Price")
 
 # Start the right column for model info and result display.
 with right_col:
@@ -341,8 +423,26 @@ if submitted:
         # Show result heading.
         st.subheader("Prediction Result")
 
-        # Display the predicted price in currency format.
-        st.success(f"Estimated Price: ${prediction:,.2f}")
+        # Display the predicted price in a styled result card.
+        st.markdown(
+            f"""
+            <div style="
+                background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+                padding: 24px;
+                border-radius: 20px;
+                text-align: center;
+                color: white;
+                font-size: 28px;
+                font-weight: 800;
+                box-shadow: 0 16px 30px rgba(34, 197, 94, 0.22);
+                margin-top: 8px;
+                margin-bottom: 18px;
+            ">
+                Estimated Price: ${prediction:,.2f}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         # Show the actual features sent to the model.
         st.subheader("Processed Input Data")
@@ -354,5 +454,6 @@ if submitted:
     except Exception as error:
         # Log the prediction error for debugging.
         logger.exception("Prediction failed: %s", error)
+
         # Show a user friendly error message.
         st.error("Prediction failed. Please verify the inputs and model files.")
