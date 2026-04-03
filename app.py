@@ -163,7 +163,7 @@ def build_input_dataframe(user_inputs: dict, feature_columns: list[str]) -> pd.D
 
 
 # Configure the Streamlit page before any other UI content.
-st.set_page_config(page_title="Real Estate Price Predictor", page_icon="🏡", layout="wide")
+st.set_page_config(page_title="Real Estate Price Predictor", layout="wide")
 
 # Add custom CSS styling to improve the full application design.
 # Simple clean blue theme styling.
@@ -224,7 +224,7 @@ st.markdown(
     /* Button */
     div[data-testid="stFormSubmitButton"] > button {
         background-color: #2563eb;
-        color: white;
+        color: #FFFFFF;
         border-radius: 8px;
         padding: 10px;
         font-weight: 600;
