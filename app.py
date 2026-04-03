@@ -223,7 +223,7 @@ st.markdown(
 
     /* Button */
     div[data-testid="stFormSubmitButton"] > button {
-        background-color: #2563eb;
+        background-color: #8A2727;
         color: #FFFFFF;
         border-radius: 8px;
         padding: 10px;
@@ -250,7 +250,7 @@ st.markdown(
 st.markdown(
     """
     <div style="
-        background: linear-gradient(135deg, #7c2d12 0%, #c2410c 55%, #f97316 100%);
+        background: #8A3727;
         padding: 32px;
         border-radius: 26px;
         margin-bottom: 24px;
