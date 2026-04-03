@@ -224,7 +224,7 @@ st.markdown(
     /* Button */
     div[data-testid="stFormSubmitButton"] > button {
         background-color: #8A2727;
-        color: #FFFFFF;
+        color: white;
         border-radius: 8px;
         padding: 10px;
         font-weight: 600;
