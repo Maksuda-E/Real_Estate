@@ -1,23 +1,49 @@
-# This line imports the logging module for logging messages
+# Import the logging module.
 import logging
 
-# This line imports os for folder creation
-import os
+# Import Path for directory creation.
+from pathlib import Path
 
-# This line imports the logs folder path and log file path from config
-from src.config import LOGS_DIR, LOG_FILE_PATH
+# Import the log directory path from config.
+from src.config import LOGS_DIR
 
-# This line creates the logs folder if it does not already exist
-os.makedirs(LOGS_DIR, exist_ok=True)
 
-# This line configures the logging system
-logging.basicConfig(
-    filename=LOG_FILE_PATH,
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s %(message)s"
-)
+# Define a function to configure and return a logger.
+def get_logger(name: str) -> logging.Logger:
+    # Create the logs directory if it does not exist.
+    Path(LOGS_DIR).mkdir(parents=True, exist_ok=True)
 
-# This function returns a logger object for the given file name
-def get_logger(name: str):
-    # This line returns a logger with the given name
-    return logging.getLogger(name)
+    # Create or get a logger with the given name.
+    logger = logging.getLogger(name)
+
+    # Return early if handlers already exist to avoid duplicates.
+    if logger.handlers:
+        # Return the existing configured logger.
+        return logger
+
+    # Set the logging level to INFO.
+    logger.setLevel(logging.INFO)
+
+    # Create a formatter for log messages.
+    formatter = logging.Formatter("%(asctime)s | %(levelname)s | %(name)s | %(message)s")
+
+    # Create a file handler for persistent logs.
+    file_handler = logging.FileHandler(LOGS_DIR / "project.log", encoding="utf-8")
+
+    # Attach the formatter to the file handler.
+    file_handler.setFormatter(formatter)
+
+    # Create a console handler for terminal output.
+    stream_handler = logging.StreamHandler()
+
+    # Attach the formatter to the console handler.
+    stream_handler.setFormatter(formatter)
+
+    # Add the file handler to the logger.
+    logger.addHandler(file_handler)
+
+    # Add the console handler to the logger.
+    logger.addHandler(stream_handler)
+
+    # Return the configured logger.
+    return logger

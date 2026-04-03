@@ -1,6 +1,7 @@
 {
-    "LinearRegression_MAE": 86948.67759509262,
-    "RandomForestRegressor_MAE": 46150.57212365591,
-    "Best_Model": "RandomForestRegressor",
-    "Best_Model_MAE": 46150.57212365591
+    "linear_regression_train_mae": 86394.9505,
+    "linear_regression_test_mae": 86948.6776,
+    "random_forest_train_mae": 17033.1126,
+    "random_forest_test_mae": 46655.8674,
+    "best_model": "RandomForestRegressor"
 }

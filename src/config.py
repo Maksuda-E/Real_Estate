@@ -1,41 +1,27 @@
-# This line imports the os module so we can work with folder paths
-import os
+# Import Path for safe file handling.
+from pathlib import Path
 
-# This line gets the absolute path of the current file
-CURRENT_FILE_PATH = os.path.abspath(__file__)
 
-# This line gets the src folder path
-SRC_DIR = os.path.dirname(CURRENT_FILE_PATH)
+# Define the project root directory.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-# This line gets the main project folder path
-PROJECT_DIR = os.path.dirname(SRC_DIR)
+# Define the data directory path.
+DATA_DIR = BASE_DIR / "data"
 
-# This line creates the full path for the data folder
-DATA_DIR = os.path.join(PROJECT_DIR, "data")
+# Define the artifacts directory path.
+ARTIFACTS_DIR = BASE_DIR / "artifacts"
 
-# This line creates the full path for the artifacts folder
-ARTIFACTS_DIR = os.path.join(PROJECT_DIR, "artifacts")
+# Define the logs directory path.
+LOGS_DIR = BASE_DIR / "logs"
 
-# This line creates the full path for the logs folder
-LOGS_DIR = os.path.join(PROJECT_DIR, "logs")
+# Define the input dataset path.
+DATA_PATH = DATA_DIR / "final.csv"
 
-# This line creates the full path for the dataset file
-DATA_FILE_PATH = os.path.join(DATA_DIR, "final.csv")
+# Define the model output path.
+MODEL_PATH = ARTIFACTS_DIR / "random_forest_model.joblib"
 
-# This line creates the full path for the saved model file
-MODEL_FILE_PATH = os.path.join(ARTIFACTS_DIR, "real_estate_model.pkl")
+# Define the feature columns output path.
+FEATURES_PATH = ARTIFACTS_DIR / "feature_columns.json"
 
-# This line creates the full path for the saved feature columns file
-FEATURE_COLUMNS_FILE_PATH = os.path.join(ARTIFACTS_DIR, "feature_columns.pkl")
-
-# This line creates the full path for the saved metrics file
-METRICS_FILE_PATH = os.path.join(ARTIFACTS_DIR, "metrics.json")
-
-# This line creates the full path for the log file
-LOG_FILE_PATH = os.path.join(LOGS_DIR, "project.log")
-
-# This line sets the random state for reproducibility
-RANDOM_STATE = 42
-
-# This line sets the test size for train and test split
-TEST_SIZE = 0.20
+# Define the metrics output path.
+METRICS_PATH = ARTIFACTS_DIR / "metrics.json"

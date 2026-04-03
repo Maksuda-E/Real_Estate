@@ -1,35 +1,35 @@
-# This line imports pandas for reading the dataset
+# Import pandas for data loading and processing.
 import pandas as pd
 
-# This line imports the logger function
+# Import the dataset path from config.
+from src.config import DATA_PATH
+
+# Import the project logger helper.
 from src.logger import get_logger
 
-# This line imports the custom project exception
-from src.custom_exception import ProjectException
 
-# This line creates a logger for this file
+# Create a logger for this module.
 logger = get_logger(__name__)
 
-# This function loads the CSV dataset
-def load_data(file_path: str) -> pd.DataFrame:
-    # This line starts a try block for safe execution
+
+# Define a function to load the raw dataset.
+def load_data() -> pd.DataFrame:
+    # Start a try block to handle file and parsing errors.
     try:
-        # This line logs that data loading has started
-        logger.info("Starting data loading from file")
+        # Log the data loading start.
+        logger.info("Loading dataset from %s", DATA_PATH)
 
-        # This line reads the CSV file into a pandas DataFrame
-        df = pd.read_csv(file_path)
+        # Read the CSV file into a DataFrame.
+        df = pd.read_csv(DATA_PATH)
 
-        # This line logs that data loading finished successfully
-        logger.info("Data loaded successfully")
+        # Log the loaded dataset shape.
+        logger.info("Dataset loaded successfully with shape %s", df.shape)
 
-        # This line returns the loaded DataFrame
+        # Return the loaded DataFrame.
         return df
-
-    # This block handles any exception during file loading
-    except Exception as exc:
-        # This line logs the error message
-        logger.error("Error occurred while loading data")
-
-        # This line raises a custom project exception
-        raise ProjectException(f"Failed to load data: {exc}")
+    # Catch any exception during loading.
+    except Exception as error:
+        # Log the exception details.
+        logger.exception("Failed to load dataset: %s", error)
+        # Re raise the error for upstream handling.
+        raise
