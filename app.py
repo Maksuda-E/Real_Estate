@@ -166,129 +166,86 @@ def build_input_dataframe(user_inputs: dict, feature_columns: list[str]) -> pd.D
 st.set_page_config(page_title="Real Estate Price Predictor", page_icon="🏡", layout="wide")
 
 # Add custom CSS styling to improve the full application design.
+# Simple clean blue theme styling.
 st.markdown(
     """
     <style>
     .stApp {
-        background: white
+        background-color: #f9fafb;
     }
 
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    h1, h2, h3 {
-        color: #7c2d12;
-        font-weight: 800;
-        letter-spacing: 0.3px;
-    }
-
-    p, label, div {
-        color: #4b5563;
-    }
-
-    div[data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.88);
-        padding: 28px;
-        border-radius: 24px;
-        border: 1px solid rgba(251, 146, 60, 0.18);
-        box-shadow: 0 12px 30px rgba(124, 45, 18, 0.08);
-        backdrop-filter: blur(10px);
-    }
-
-    div[data-testid="stMetric"] {
-        background: rgba(255, 255, 255, 0.94);
-        padding: 14px;
-        border-radius: 20px;
-        border: 1px solid rgba(251, 146, 60, 0.16);
-        box-shadow: 0 10px 24px rgba(124, 45, 18, 0.08);
-    }
-
-    div[data-testid="stMetricLabel"] {
-        color: #9a3412;
+    /* Titles */
+    h1 {
+        color: #1e3a8a;
         font-weight: 700;
     }
 
-    div[data-testid="stMetricValue"] {
-        color: #7c2d12;
-        font-weight: 800;
-    }
-
-    div[data-testid="stInfo"] {
-        background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
-        color: #7c2d12;
-        border-radius: 18px;
-        border: 1px solid rgba(251, 146, 60, 0.28);
-        box-shadow: 0 8px 20px rgba(251, 146, 60, 0.12);
+    h2, h3 {
+        color: #1f2937;
         font-weight: 600;
     }
 
-    div[data-baseweb="input"] > div {
-        background: #fff7ed;
-        border: 1px solid #fdba74;
-        border-radius: 14px;
-        box-shadow: none;
+    p, label {
+        color: #374151;
     }
 
-    div[data-baseweb="input"] input {
-        color: #7c2d12;
-        font-weight: 600;
+    /* Form container */
+    div[data-testid="stForm"] {
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
     }
 
+    /* Input fields */
+    div[data-baseweb="input"] > div,
     div[data-baseweb="select"] > div {
-        background: #fff7ed;
-        border: 1px solid #fdba74;
-        border-radius: 14px;
-        color: #7c2d12;
-        box-shadow: none;
+        background-color: #f3f4f6;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
     }
 
+    /* Metrics */
+    div[data-testid="stMetric"] {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        border: 1px solid #e5e7eb;
+    }
+
+    /* Info box */
+    div[data-testid="stInfo"] {
+        background: #e0f2fe;
+        color: #1e3a8a;
+        border-radius: 10px;
+        border: 1px solid #bae6fd;
+    }
+
+    /* Button */
     div[data-testid="stFormSubmitButton"] > button {
-        width: 100%;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+        background-color: #2563eb;
         color: white;
+        border-radius: 8px;
+        padding: 10px;
+        font-weight: 600;
         border: none;
-        border-radius: 16px;
-        padding: 0.8rem 1.2rem;
-        font-size: 1rem;
-        font-weight: 800;
-        box-shadow: 0 14px 28px rgba(234, 88, 12, 0.28);
-        transition: all 0.25s ease-in-out;
     }
 
     div[data-testid="stFormSubmitButton"] > button:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 18px 30px rgba(234, 88, 12, 0.34);
-        background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
-        color: white;
+        background-color: #1d4ed8;
     }
 
-    div[data-testid="stFormSubmitButton"] > button:focus {
-        outline: none;
-        box-shadow: 0 0 0 0.2rem rgba(251, 146, 60, 0.35);
-        color: white;
-    }
-
-    .stDataFrame {
-        background: rgba(255, 255, 255, 0.94);
-        border-radius: 18px;
-        border: 1px solid rgba(251, 146, 60, 0.16);
-        box-shadow: 0 10px 24px rgba(124, 45, 18, 0.08);
-        padding: 8px;
-    }
-
-    div[data-testid="stMarkdownContainer"] hr {
+    /* Divider */
+    hr {
         border: none;
-        height: 2px;
-        background: linear-gradient(90deg, #fdba74 0%, #fb7185 100%);
-        border-radius: 999px;
+        height: 1px;
+        background: #e5e7eb;
     }
+
     </style>
     """,
     unsafe_allow_html=True,
 )
-
 # Display a styled hero header section.
 st.markdown(
     """
