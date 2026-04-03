@@ -171,7 +171,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #D6CECE;
+        background-color: #EDF3F7;
     }
 
     /* Titles */
