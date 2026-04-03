@@ -170,6 +170,14 @@ st.set_page_config(page_title="Real Estate Price Predictor", layout="wide")
 st.markdown(
     """
     <style>
+    /* REMOVE HEADER */
+        header {visibility: hidden;}
+
+        /* REMOVE TOP SPACE */
+        .block-container {
+            padding-top: 1rem !important;
+        }
+
     .stApp {
         background-color: #EDF3F7;
     }
