@@ -232,7 +232,7 @@ st.markdown(
     }
 
     div[data-testid="stFormSubmitButton"] > button:hover {
-        background-color: #1d4ed8;
+        background-color: white;
     }
 
     /* Divider */
