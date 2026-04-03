@@ -170,7 +170,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(135deg, #fffaf5 0%, #fef3e7 45%, #fde2e4 100%);
+        background: white
     }
 
     .block-container {
