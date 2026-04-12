@@ -82,7 +82,7 @@ pip install -r requirements.txt
 python main.py
 
 # Run app:
-streamlit run app.py
+python -m streamlit run app.py
 
 # Streamlit Link
 https://realestate-maksuda.streamlit.app/

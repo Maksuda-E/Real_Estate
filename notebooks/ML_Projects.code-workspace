@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Loan-Eligibility"
+		},
+		{
+			"path": "../../UCLA_Neural-Networks"
+		},
+		{
+			"path": "../../Unsupervised-Clustering"
+		}
+	],
+	"settings": {}
+}
