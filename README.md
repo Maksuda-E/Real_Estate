@@ -15,7 +15,6 @@ The project follows the notebook workflow:
 - Save artifacts  
 - Deploy using Streamlit  
 
----
 
 ## Problem Statement
 Real estate pricing depends on multiple factors such as size, structure, and market indicators.
@@ -25,7 +24,6 @@ This project helps:
 - Sellers price homes correctly  
 - Analysts make data-driven decisions  
 
----
 
 ## Dataset
 Features used:
@@ -50,7 +48,6 @@ Target:
 Dataset file:  
 `data/final.csv`
 
----
 
 ## Model Workflow
 - Load dataset  
@@ -63,7 +60,6 @@ Dataset file:
 - Select best model  
 - Save model and artifacts  
 
----
 
 ## Model Performance
 - Linear Regression MAE: ~86,000  
@@ -71,13 +67,11 @@ Dataset file:
 
 Random Forest is selected as the final model.
 
----
 
 ## Prediction
 The model predicts:
 - Estimated house price based on input features  
 
----
 
 ## How to Run
 
