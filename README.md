@@ -90,6 +90,10 @@ python main.py
 # Run app:
 streamlit run app.py
 
+# Streamlit Link
+https://realestate-maksuda.streamlit.app/
+
+
 # Key Features
 Modular code structure
 Logging and error handling
